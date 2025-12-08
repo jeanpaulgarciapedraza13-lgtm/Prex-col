@@ -1,0 +1,21 @@
+# Entornos virtuales
+venv/
+.env/
+.venv/
+
+# Django / Python
+__pycache__/
+*.pyc
+*.pyo
+*.sqlite3
+
+# Media
+media/
+
+# VSCode
+.vscode/
+
+# React Native
+mobile/node_modules/
+mobile/android/
+mobile/ios/
