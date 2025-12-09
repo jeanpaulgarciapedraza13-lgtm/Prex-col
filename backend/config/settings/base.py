@@ -1,10 +1,10 @@
 from pathlib import Path
 import os
 
-# BASE_DIR → /Prex-col
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+# BASE_DIR → carpeta principal del backend
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "cámbiame-antes-de-producción"
+SECRET_KEY = "cambialo-en-produccion"
 
 DEBUG = True
 
@@ -19,15 +19,15 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    # Tus apps
+    # External Apps
+    "rest_framework",
+    "corsheaders",
+
+    # Custom apps
     "apps.users",
     "apps.pedidos",
     "apps.tarifador",
     "apps.core",
-
-    # DRF y cors
-    "rest_framework",
-    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -41,13 +41,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# 🔥 CORREGIDO: tu carpeta principal NO es config, es backend
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [BASE_DIR / "templates"],  # opcional
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -60,11 +59,11 @@ TEMPLATES = [
     },
 ]
 
-# 🔥 CORREGIDO
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
-# Base de datos SQLite temporal (puedes cambiarla luego)
+
+# BASE DE DATOS
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -72,10 +71,32 @@ DATABASES = {
     }
 }
 
-# Archivos estáticos
-STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
 
-# Archivos multimedia
+# ARCHIVOS ESTÁTICOS
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # debe existir una carpeta /static
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"  # para producción
+
+
+# ARCHIVOS MEDIA (imagenes, PDF, uploads)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+
+# AUTENTICACIÓN
+AUTH_USER_MODEL = "users.User"
+
+
+# CORS
+CORS_ALLOW_ALL_ORIGINS = True
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}

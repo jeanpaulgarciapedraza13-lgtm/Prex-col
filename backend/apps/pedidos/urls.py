@@ -1,7 +1,9 @@
 from django.urls import path
-from . import views
+from .views import CrearPedidoView, ListarPedidosView, ActualizarPedidoView, EliminarPedidoView
 
 urlpatterns = [
-    path("", views.index, name="pedidos_index"),
-    path('', views.listar_pedidos, name='listar_pedidos'),
+    path("create/", CrearPedidoView.as_view()),
+    path("list/", ListarPedidosView.as_view()),
+    path("update/<str:codigo>/", ActualizarPedidoView.as_view()),
+    path("delete/<str:codigo>/", EliminarPedidoView.as_view()),
 ]
